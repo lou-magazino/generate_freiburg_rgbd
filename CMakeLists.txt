@@ -7,7 +7,7 @@ project(generate_freiburg_rgbd)
 find_package(catkin REQUIRED COMPONENTS sensor_msgs image_transport cv_bridge)
 
 ## System dependencies are found with CMake's conventions
-find_package(Boost REQUIRED COMPONENTS system filesystem)
+find_package(Boost REQUIRED COMPONENTS system filesystem program_options)
 find_package(OpenCV REQUIRED)
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -126,6 +126,7 @@ include_directories(
 
 ## Declare a C++ executable
 add_executable(record src/record.cpp)
+add_executable(record_separate src/record_separate.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
@@ -135,6 +136,11 @@ add_executable(record src/record.cpp)
 target_link_libraries(record
   ${catkin_LIBRARIES}
   ${OpenCV_LIBRARIES}
+)
+target_link_libraries(record_separate
+  ${catkin_LIBRARIES}
+  ${OpenCV_LIBRARIES}
+  boost_program_options
 )
 
 #############
@@ -152,7 +158,7 @@ target_link_libraries(record
 # )
 
 ## Mark executables and/or libraries for installation
-install(TARGETS record
+install(TARGETS record record_separate
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
